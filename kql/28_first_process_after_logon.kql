@@ -1,0 +1,17 @@
+// First process after the suspicious logon
+let device = "ch-ops-wks02";
+let firstLogon = DeviceLogonEvents
+| where DeviceName == device
+| where RemoteIP == "104.164.168.17"
+| sort by Timestamp asc
+| take 1
+| project LogonTime = Timestamp, AccountName;
+firstLogon
+| join kind=inner (
+    DeviceProcessEvents
+    | where DeviceName == device
+) on $left.AccountName == $right.InitiatingProcessAccountName
+| where Timestamp > LogonTime
+| sort by Timestamp asc
+| take 1
+| project Timestamp, InitiatingProcessAccountName, FileName, ProcessCommandLine

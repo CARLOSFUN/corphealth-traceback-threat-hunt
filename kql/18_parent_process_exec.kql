@@ -1,0 +1,6 @@
+// Parent process that executed revshell.exe
+let device = "ch-ops-wks02";
+DeviceProcessEvents
+| where DeviceName == device
+| where FileName == "revshell.exe"
+| project Timestamp, FileName, InitiatingProcessFileName, InitiatingProcessCommandLine

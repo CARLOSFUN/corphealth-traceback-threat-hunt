@@ -1,0 +1,7 @@
+// Primary staging file location
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FolderPath == "C:\ProgramData\Microsoft\Diagnostics\CorpHealth"
+| where FileName == "inventory_6ECFD4DF.csv"
+| project Timestamp, ActionType, FolderPath, FileName, SHA256

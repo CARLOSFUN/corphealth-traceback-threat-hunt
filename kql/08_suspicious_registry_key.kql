@@ -1,0 +1,6 @@
+// Suspicious registry key creation
+let device = "ch-ops-wks02";
+DeviceRegistryEvents
+| where DeviceName == device
+| where RegistryKey == "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\CorpHealthAgent"
+| project Timestamp, ActionType, RegistryKey, RegistryValueName, RegistryValueData

@@ -1,0 +1,6 @@
+// Hash for the staged file
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FileName == "inventory_6ECFD4DF.csv"
+| project Timestamp, FileName, SHA256
