@@ -1,0 +1,6 @@
+// External download URL for ingress tool
+let device = "ch-ops-wks02";
+DeviceNetworkEvents
+| where DeviceName == device
+| where RemoteUrl == "https://unresuscitating-donnette-smothery.ngrok-free.dev/revshell.exe"
+| project Timestamp, RemoteUrl, RemoteIP, InitiatingProcessFileName

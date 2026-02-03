@@ -1,0 +1,8 @@
+// Privilege escalation event time (token modification)
+let device = "ch-ops-wks02";
+DeviceEvents
+| where DeviceName == device
+| where ActionType has "Token"
+| where InitiatingProcessId == 4888
+| sort by Timestamp asc
+| project Timestamp, ActionType, InitiatingProcessId, AccountSid

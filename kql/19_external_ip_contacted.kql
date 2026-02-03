@@ -1,0 +1,6 @@
+// External IP contacted
+let device = "ch-ops-wks02";
+DeviceNetworkEvents
+| where DeviceName == device
+| where RemoteIP == "13.228.171.119"
+| project Timestamp, RemoteIP, RemotePort, InitiatingProcessFileName

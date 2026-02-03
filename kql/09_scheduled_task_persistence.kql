@@ -1,0 +1,6 @@
+// Scheduled task persistence registry path
+let device = "ch-ops-wks02";
+DeviceRegistryEvents
+| where DeviceName == device
+| where RegistryKey == "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\CorpHealth_A65E64"
+| project Timestamp, ActionType, RegistryKey, RegistryValueName, RegistryValueData

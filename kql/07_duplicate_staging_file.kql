@@ -1,0 +1,7 @@
+// Duplicate staging file in user temp
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FolderPath == "C:\Users\ops.maintenance\AppData\Local\Temp\CorpHealth"
+| where FileName == "inventory_tmp_6ECFD4DF.csv"
+| project Timestamp, ActionType, FolderPath, FileName
