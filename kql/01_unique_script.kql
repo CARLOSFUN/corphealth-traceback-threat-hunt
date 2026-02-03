@@ -1,0 +1,6 @@
+// Identify the unique script name observed
+let device = "ch-ops-wks02";
+DeviceProcessEvents
+| where DeviceName == device
+| where ProcessCommandLine has "MaintenanceRunner_Distributed.ps1"
+| project Timestamp, FileName, ProcessCommandLine, InitiatingProcessAccountName

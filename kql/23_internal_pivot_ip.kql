@@ -1,0 +1,6 @@
+// Internal pivot IP address
+let device = "ch-ops-wks02";
+DeviceNetworkEvents
+| where DeviceName == device
+| where RemoteIP == "10.168.0.6"
+| project Timestamp, RemoteIP, RemotePort, InitiatingProcessFileName
