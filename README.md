@@ -84,6 +84,6 @@ Run the queries in `/kql` in numeric order (00 → 31). Each file is scoped to t
 - [kql/](kql) — step-by-step Advanced Hunting queries
 - [screenshots/](screenshots) — KQL output screenshots
 
-## Profile homepage link
-Place this entry directly under your **RDP compromise CTF** item on your profile homepage:
-- [CorpHealth Operations Activity Review (Microsoft Defender Advanced Hunting CTF)](./)
+## Profile homepage (GitHub profile README)
+Use this recruiter-friendly project list entry and place it directly under your **RDP compromise CTF** item on your profile homepage:
+- **CorpHealth Operations Activity Review (MDE Advanced Hunting CTF)** — Incident investigation write-up with timeline, IOCs, detections, and KQL workflows. [View repo](./)
