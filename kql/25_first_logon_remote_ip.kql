@@ -1,0 +1,8 @@
+// First logon remote IP
+let device = "ch-ops-wks02";
+DeviceLogonEvents
+| where DeviceName == device
+| where RemoteIP == "104.164.168.17"
+| sort by Timestamp asc
+| take 1
+| project Timestamp, RemoteIP

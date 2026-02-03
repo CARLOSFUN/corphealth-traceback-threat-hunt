@@ -1,0 +1,8 @@
+// Latest successful beacon timestamp
+let device = "ch-ops-wks02";
+DeviceNetworkEvents
+| where DeviceName == device
+| where RemoteIP == "127.0.0.1" and RemotePort == 8080
+| sort by Timestamp desc
+| take 1
+| project Timestamp, InitiatingProcessFileName, RemoteIP, RemotePort

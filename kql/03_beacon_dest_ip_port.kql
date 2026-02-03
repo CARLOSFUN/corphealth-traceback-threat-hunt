@@ -1,0 +1,6 @@
+// Beacon destination IP and port
+let device = "ch-ops-wks02";
+DeviceNetworkEvents
+| where DeviceName == device
+| where RemoteIP == "127.0.0.1" and RemotePort == 8080
+| project Timestamp, InitiatingProcessFileName, RemoteIP, RemotePort
