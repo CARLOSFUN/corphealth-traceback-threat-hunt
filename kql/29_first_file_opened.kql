@@ -1,0 +1,6 @@
+// First file opened of interest
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FileName == "user-pass.txt"
+| project Timestamp, ActionType, FolderPath, FileName, InitiatingProcessAccountName

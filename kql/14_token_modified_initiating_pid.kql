@@ -1,0 +1,7 @@
+// Token modified initiating PID
+let device = "ch-ops-wks02";
+DeviceEvents
+| where DeviceName == device
+| where ActionType has "Token"
+| where InitiatingProcessId == 4888
+| project Timestamp, ActionType, InitiatingProcessId, InitiatingProcessFileName

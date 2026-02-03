@@ -1,0 +1,6 @@
+// Remote session IP address
+let device = "ch-ops-wks02";
+DeviceLogonEvents
+| where DeviceName == device
+| where RemoteIP == "100.64.100.6"
+| project Timestamp, RemoteIP, RemoteDeviceName, AccountName, LogonType

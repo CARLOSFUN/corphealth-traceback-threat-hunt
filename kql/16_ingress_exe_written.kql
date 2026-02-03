@@ -1,0 +1,6 @@
+// Ingress tool written to disk
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FileName == "revshell.exe"
+| project Timestamp, ActionType, FolderPath, FileName, InitiatingProcessFileName

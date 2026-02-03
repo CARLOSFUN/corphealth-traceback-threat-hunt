@@ -1,0 +1,7 @@
+// Token modified user SID
+let device = "ch-ops-wks02";
+DeviceEvents
+| where DeviceName == device
+| where ActionType has "Token"
+| where AccountSid == "S-1-5-21-1605642021-30596605-784192815-1000"
+| project Timestamp, ActionType, AccountSid, InitiatingProcessId
