@@ -1,7 +1,11 @@
-// Defender exclusion attempt path
+// Purpose: Surface attempts to add Microsoft Defender exclusions.
+// Expected output: Antivirus exclusion events with affected paths or extensions.
+// Flag: 12_defender_exclusion_attempt
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceEvents
 | where DeviceName == device
-| where ActionType has "Antivirus" or ActionType has "Exclusion"
-| where AdditionalFields has "C:\ProgramData\Corp\Ops\staging"
-| project Timestamp, ActionType, AdditionalFields, InitiatingProcessAccountName
+| where Timestamp between (startTime .. endTime)
+| where ActionType has "AntivirusExclusion"
+| project Timestamp, ActionType, AdditionalFields, InitiatingProcessCommandLine

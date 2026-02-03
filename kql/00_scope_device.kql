@@ -1,5 +1,7 @@
-// Scope all queries to the target device
+// Purpose: Confirm the target device scope and capture core device metadata.
+// Expected output: Device name, ID, OS, and onboarding status for the scoped host.
+// Flag: 00_scope_device
 let device = "ch-ops-wks02";
 DeviceInfo
 | where DeviceName == device
-| project DeviceName, DeviceId, OSPlatform, OnboardingStatus
+| project DeviceName, DeviceId, OSPlatform, OSVersion, OnboardingStatus

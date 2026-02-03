@@ -1,16 +1,18 @@
-// Next action after the file was opened
+// Purpose: Identify the next action that occurred after the first file access.
+// Expected output: The earliest subsequent event after the first file access.
+// Flag: 30_next_action_after_file
 let device = "ch-ops-wks02";
-let fileEvent = DeviceFileEvents
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
+let firstFile = DeviceFileEvents
 | where DeviceName == device
-| where FileName == "user-pass.txt"
-| sort by Timestamp asc
-| take 1
-| project FileTime = Timestamp;
-fileEvent
-| join kind=inner (
-    DeviceProcessEvents
-    | where DeviceName == device
-) on $left.FileTime < $right.Timestamp
-| sort by Timestamp asc
-| take 1
-| project Timestamp, FileName, ProcessCommandLine, InitiatingProcessAccountName
+| where Timestamp between (startTime .. endTime)
+| where ActionType in ("FileOpened", "FileCreated")
+| summarize arg_min(Timestamp, FileName, FolderPath, InitiatingProcessCommandLine) by DeviceName;
+DeviceEvents
+| where DeviceName == device
+| where Timestamp between (startTime .. endTime)
+| join kind=inner (firstFile) on DeviceName
+| where Timestamp > firstFile_Timestamp
+| summarize arg_min(Timestamp, ActionType, AdditionalFields, InitiatingProcessCommandLine) by DeviceName
+| project Timestamp, ActionType, AdditionalFields, InitiatingProcessCommandLine

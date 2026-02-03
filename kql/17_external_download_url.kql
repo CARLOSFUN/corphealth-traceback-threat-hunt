@@ -1,6 +1,12 @@
-// External download URL for ingress tool
+// Purpose: Identify external URLs used to download payloads.
+// Expected output: Network events with remote URLs and initiating process details.
+// Flag: 17_external_download_url
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteUrl == "https://unresuscitating-donnette-smothery.ngrok-free.dev/revshell.exe"
-| project Timestamp, RemoteUrl, RemoteIP, InitiatingProcessFileName
+| where Timestamp between (startTime .. endTime)
+| where isnotempty(RemoteUrl)
+| where InitiatingProcessCommandLine has "http" or InitiatingProcessCommandLine has "wget" or InitiatingProcessCommandLine has "curl"
+| project Timestamp, RemoteUrl, RemoteIP, RemotePort, InitiatingProcessCommandLine

@@ -1,8 +1,12 @@
-// Privilege escalation event time (token modification)
+// Purpose: Determine the time of a privilege escalation event on the host.
+// Expected output: Earliest high-integrity process spawned from a medium-integrity parent.
+// Flag: 11_priv_escalation_event_time
 let device = "ch-ops-wks02";
-DeviceEvents
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
+DeviceProcessEvents
 | where DeviceName == device
-| where ActionType has "Token"
-| where InitiatingProcessId == 4888
-| sort by Timestamp asc
-| project Timestamp, ActionType, InitiatingProcessId, AccountSid
+| where Timestamp between (startTime .. endTime)
+| where ProcessIntegrityLevel == "High" and InitiatingProcessIntegrityLevel == "Medium"
+| summarize PrivEscTime=min(Timestamp) by ProcessName, InitiatingProcessName, ProcessCommandLine
+| project PrivEscTime, ProcessName, InitiatingProcessName, ProcessCommandLine

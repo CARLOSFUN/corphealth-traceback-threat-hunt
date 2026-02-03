@@ -1,6 +1,11 @@
-// Remote session IP address
+// Purpose: Capture the remote IP address used for interactive sessions.
+// Expected output: Remote IPs tied to remote logon events on the host.
+// Flag: 22_remote_session_ip
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceLogonEvents
 | where DeviceName == device
-| where RemoteIP == "100.64.100.6"
-| project Timestamp, RemoteIP, RemoteDeviceName, AccountName, LogonType
+| where Timestamp between (startTime .. endTime)
+| where LogonType == "RemoteInteractive"
+| project Timestamp, AccountName, RemoteIP, LogonType, AdditionalFields

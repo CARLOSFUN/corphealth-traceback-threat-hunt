@@ -1,16 +1,19 @@
-// Next account accessed after initial logon
+// Purpose: Identify the next account accessed after the first suspicious logon.
+// Expected output: Subsequent logon/account activity following the first remote logon.
+// Flag: 31_next_account_accessed
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 let firstLogon = DeviceLogonEvents
 | where DeviceName == device
-| where RemoteIP == "104.164.168.17"
-| sort by Timestamp asc
-| take 1
-| project LogonTime = Timestamp;
-firstLogon
-| join kind=inner (
-    DeviceLogonEvents
-    | where DeviceName == device
-) on $left.LogonTime < $right.Timestamp
-| sort by Timestamp asc
-| take 1
+| where Timestamp between (startTime .. endTime)
+| where LogonType in ("RemoteInteractive", "Network")
+| where RemoteIPType == "Public"
+| summarize arg_min(Timestamp, AccountName) by DeviceName;
+DeviceLogonEvents
+| where DeviceName == device
+| where Timestamp between (startTime .. endTime)
+| join kind=inner (firstLogon) on DeviceName
+| where Timestamp > firstLogon_Timestamp
+| summarize arg_min(Timestamp, AccountName, RemoteIP, LogonType) by DeviceName
 | project Timestamp, AccountName, RemoteIP, LogonType
