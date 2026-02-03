@@ -1,0 +1,16 @@
+// Next action after the file was opened
+let device = "ch-ops-wks02";
+let fileEvent = DeviceFileEvents
+| where DeviceName == device
+| where FileName == "user-pass.txt"
+| sort by Timestamp asc
+| take 1
+| project FileTime = Timestamp;
+fileEvent
+| join kind=inner (
+    DeviceProcessEvents
+    | where DeviceName == device
+) on $left.FileTime < $right.Timestamp
+| sort by Timestamp asc
+| take 1
+| project Timestamp, FileName, ProcessCommandLine, InitiatingProcessAccountName

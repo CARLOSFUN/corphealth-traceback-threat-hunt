@@ -1,0 +1,7 @@
+// Defender exclusion attempt path
+let device = "ch-ops-wks02";
+DeviceEvents
+| where DeviceName == device
+| where ActionType has "Antivirus" or ActionType has "Exclusion"
+| where AdditionalFields has "C:\ProgramData\Corp\Ops\staging"
+| project Timestamp, ActionType, AdditionalFields, InitiatingProcessAccountName

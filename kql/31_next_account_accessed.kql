@@ -1,0 +1,16 @@
+// Next account accessed after initial logon
+let device = "ch-ops-wks02";
+let firstLogon = DeviceLogonEvents
+| where DeviceName == device
+| where RemoteIP == "104.164.168.17"
+| sort by Timestamp asc
+| take 1
+| project LogonTime = Timestamp;
+firstLogon
+| join kind=inner (
+    DeviceLogonEvents
+    | where DeviceName == device
+) on $left.LogonTime < $right.Timestamp
+| sort by Timestamp asc
+| take 1
+| project Timestamp, AccountName, RemoteIP, LogonType

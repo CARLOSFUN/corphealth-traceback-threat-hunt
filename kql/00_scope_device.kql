@@ -1,0 +1,5 @@
+// Scope all queries to the target device
+let device = "ch-ops-wks02";
+DeviceInfo
+| where DeviceName == device
+| project DeviceName, DeviceId, OSPlatform, OnboardingStatus
