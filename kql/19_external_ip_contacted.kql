@@ -1,6 +1,11 @@
-// External IP contacted
+// Purpose: List external IPs contacted by the suspicious process.
+// Expected output: Public remote IPs, ports, and connection timestamps.
+// Flag: 19_external_ip_contacted
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteIP == "13.228.171.119"
-| project Timestamp, RemoteIP, RemotePort, InitiatingProcessFileName
+| where Timestamp between (startTime .. endTime)
+| where RemoteIPType == "Public"
+| project Timestamp, RemoteIP, RemotePort, ActionType, InitiatingProcessCommandLine

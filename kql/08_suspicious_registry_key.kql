@@ -1,6 +1,11 @@
-// Suspicious registry key creation
+// Purpose: Find suspicious registry keys associated with persistence or staging.
+// Expected output: Registry key/value activity tied to suspicious persistence locations.
+// Flag: 08_suspicious_registry_key
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceRegistryEvents
 | where DeviceName == device
-| where RegistryKey == "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\CorpHealthAgent"
-| project Timestamp, ActionType, RegistryKey, RegistryValueName, RegistryValueData
+| where Timestamp between (startTime .. endTime)
+| where RegistryKey has "\Run" or RegistryKey has "\RunOnce"
+| project Timestamp, RegistryKey, RegistryValueName, RegistryValueData, InitiatingProcessCommandLine

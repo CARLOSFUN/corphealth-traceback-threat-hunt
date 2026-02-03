@@ -1,6 +1,11 @@
-// Internal pivot IP address
+// Purpose: Identify internal pivot IPs contacted during lateral movement.
+// Expected output: Private IPs contacted by suspicious processes.
+// Flag: 23_internal_pivot_ip
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteIP == "10.168.0.6"
-| project Timestamp, RemoteIP, RemotePort, InitiatingProcessFileName
+| where Timestamp between (startTime .. endTime)
+| where RemoteIPType == "Private"
+| project Timestamp, RemoteIP, RemotePort, InitiatingProcessCommandLine

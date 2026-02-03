@@ -1,6 +1,13 @@
-// PowerShell decoded command indicator
+// Purpose: Decode any PowerShell EncodedCommand usage observed on the host.
+// Expected output: Original command line with extracted and decoded Base64 content.
+// Flag: 13_encoded_command_decode
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceProcessEvents
 | where DeviceName == device
-| where ProcessCommandLine has "token-6D5E4EE08227"
-| project Timestamp, FileName, ProcessCommandLine, InitiatingProcessId
+| where Timestamp between (startTime .. endTime)
+| where ProcessCommandLine has "-EncodedCommand"
+| extend Enc = extract(@"-EncodedCommand\s+([A-Za-z0-9+/=]+)", 1, ProcessCommandLine)
+| extend Decoded = base64_decode_tostring(Enc)
+| project Timestamp, ProcessCommandLine, Enc, Decoded

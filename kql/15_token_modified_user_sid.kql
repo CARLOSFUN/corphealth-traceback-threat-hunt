@@ -1,7 +1,11 @@
-// Token modified user SID
+// Purpose: Capture the user SID tied to token modification activity.
+// Expected output: Token modification events with affected account identifiers.
+// Flag: 15_token_modified_user_sid
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceEvents
 | where DeviceName == device
-| where ActionType has "Token"
-| where AccountSid == "S-1-5-21-1605642021-30596605-784192815-1000"
-| project Timestamp, ActionType, AccountSid, InitiatingProcessId
+| where Timestamp between (startTime .. endTime)
+| where ActionType == "TokenModified"
+| project Timestamp, AccountSid, AccountName, InitiatingProcessCommandLine

@@ -1,8 +1,11 @@
-// Geo region from source IP
+// Purpose: Map remote IPs to geographic region metadata.
+// Expected output: Public IPs with reported country/region fields.
+// Flag: 27_geo_region_from_ip
 let device = "ch-ops-wks02";
-DeviceLogonEvents
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
+DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteIP == "104.164.168.17"
-| sort by Timestamp asc
-| take 1
-| project Timestamp, RemoteIP, RemoteIPCountry
+| where Timestamp between (startTime .. endTime)
+| where RemoteIPType == "Public"
+| project Timestamp, RemoteIP, RemoteIPCountry, RemoteIPCity, InitiatingProcessCommandLine

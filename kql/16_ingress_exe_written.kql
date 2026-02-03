@@ -1,6 +1,12 @@
-// Ingress tool written to disk
+// Purpose: Locate executables written to disk during ingress activity.
+// Expected output: EXE file creation events with file paths and hashes.
+// Flag: 16_ingress_exe_written
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceFileEvents
 | where DeviceName == device
-| where FileName == "revshell.exe"
-| project Timestamp, ActionType, FolderPath, FileName, InitiatingProcessFileName
+| where Timestamp between (startTime .. endTime)
+| where ActionType == "FileCreated"
+| where FileName endswith ".exe"
+| project Timestamp, FileName, FolderPath, SHA1, SHA256, InitiatingProcessCommandLine

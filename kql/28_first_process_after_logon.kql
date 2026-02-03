@@ -1,17 +1,19 @@
-// First process after the suspicious logon
+// Purpose: Identify the first process execution after the suspicious logon.
+// Expected output: Earliest process event after the first remote logon.
+// Flag: 28_first_process_after_logon
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 let firstLogon = DeviceLogonEvents
 | where DeviceName == device
-| where RemoteIP == "104.164.168.17"
-| sort by Timestamp asc
-| take 1
-| project LogonTime = Timestamp, AccountName;
-firstLogon
-| join kind=inner (
-    DeviceProcessEvents
-    | where DeviceName == device
-) on $left.AccountName == $right.InitiatingProcessAccountName
-| where Timestamp > LogonTime
-| sort by Timestamp asc
-| take 1
-| project Timestamp, InitiatingProcessAccountName, FileName, ProcessCommandLine
+| where Timestamp between (startTime .. endTime)
+| where LogonType in ("RemoteInteractive", "Network")
+| where RemoteIPType == "Public"
+| summarize arg_min(Timestamp, AccountSid, AccountName) by DeviceName;
+DeviceProcessEvents
+| where DeviceName == device
+| where Timestamp between (startTime .. endTime)
+| join kind=inner (firstLogon) on DeviceName
+| where Timestamp > firstLogon_Timestamp
+| summarize arg_min(Timestamp, ProcessName, ProcessCommandLine, InitiatingProcessName, AccountName) by DeviceName
+| project Timestamp, ProcessName, ProcessCommandLine, InitiatingProcessName, AccountName

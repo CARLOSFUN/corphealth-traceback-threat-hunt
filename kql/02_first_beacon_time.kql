@@ -1,8 +1,13 @@
-// First outbound beacon time from the script
+// Purpose: Determine the first beacon timestamp for the suspected maintenance runner script.
+// Expected output: Earliest successful network connection time for the beacon process.
+// Flag: 02_first_beacon_time
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteIP == "127.0.0.1" and RemotePort == 8080
-| sort by Timestamp asc
-| take 1
-| project Timestamp, InitiatingProcessFileName, RemoteIP, RemotePort
+| where Timestamp between (startTime .. endTime)
+| where InitiatingProcessCommandLine contains "MaintenanceRunner_Distributed.ps1"
+| where ActionType == "ConnectionSuccess"
+| summarize FirstBeaconTime=min(Timestamp)
+| project FirstBeaconTime

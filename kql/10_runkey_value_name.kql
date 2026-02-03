@@ -1,6 +1,11 @@
-// Run key value name used for persistence
+// Purpose: Identify the specific Run key value name used for persistence.
+// Expected output: Registry value names written under Run/RunOnce.
+// Flag: 10_runkey_value_name
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceRegistryEvents
 | where DeviceName == device
-| where RegistryValueName == "MaintenanceRunner"
-| project Timestamp, ActionType, RegistryKey, RegistryValueName, RegistryValueData
+| where Timestamp between (startTime .. endTime)
+| where RegistryKey has "\CurrentVersion\Run"
+| project Timestamp, RegistryKey, RegistryValueName, RegistryValueData, InitiatingProcessCommandLine
