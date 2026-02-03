@@ -1,28 +1,26 @@
 # CorpHealth Operations Activity Review (Microsoft Defender Advanced Hunting CTF)
 
-## Scenario summary
+## Scenario Overview
 CorpHealth observed off-hours anomalies tied to an operations account on workstation **ch-ops-wks02**. This investigation reviews suspicious execution, network activity, and persistence artifacts to determine the scope and intent of the activity.
 
-## Investigation objectives
+## Investigation Scope
+**Objectives**
 - Establish a reliable timeline of suspicious activity.
 - Identify tooling, staging paths, and persistence mechanisms.
 - Determine external infrastructure and potential lateral movement.
 - Provide actionable detections and remediation guidance.
 
-## Tools & data sources
+**Tools & data sources**
 - Microsoft Defender for Endpoint (MDE) Advanced Hunting
 - Log Analytics workspace (Cyber Range enterprise environment)
 
-Primary MDE Advanced Hunting tables:
+**Primary MDE Advanced Hunting tables**
 - `DeviceProcessEvents`
 - `DeviceNetworkEvents`
 - `DeviceFileEvents`
 - `DeviceRegistryEvents`
 - `DeviceEvents`
 - `DeviceLogonEvents`
-
-## Final outcome summary
-Activity on **ch-ops-wks02** shows scripted execution, local staging, persistence mechanisms, and an external download of **revshell.exe** followed by outbound contact. The behaviors align with post-compromise tradecraft rather than routine maintenance and warrant containment and credential hygiene.
 
 ## Key findings
 - Device: **ch-ops-wks02**
@@ -76,10 +74,13 @@ Activity on **ch-ops-wks02** shows scripted execution, local staging, persistenc
   - HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\CorpHealthAgent
   - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\CorpHealth_A65E64
 
+## Detection Ideas
+Summarized detection opportunities are listed in [docs/detections.md](docs/detections.md), mapped to the MDE tables and fields used in the hunt.
+
 ## How to reproduce
 Run the queries in `/kql` in numeric order (00 → 31). Each file is scoped to the device and surfaces one confirmed finding.
 
-## Repo navigation
+## Repo Navigation
 - [docs/](docs) — narrative report, timeline, IOCs, detections, lessons learned
 - [kql/](kql) — step-by-step Advanced Hunting queries
 - [screenshots/](screenshots) — KQL output screenshots
