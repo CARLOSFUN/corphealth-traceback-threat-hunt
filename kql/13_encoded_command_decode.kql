@@ -1,0 +1,6 @@
+// PowerShell decoded command indicator
+let device = "ch-ops-wks02";
+DeviceProcessEvents
+| where DeviceName == device
+| where ProcessCommandLine has "token-6D5E4EE08227"
+| project Timestamp, FileName, ProcessCommandLine, InitiatingProcessId

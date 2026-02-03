@@ -1,0 +1,7 @@
+// Startup folder persistence artifact
+let device = "ch-ops-wks02";
+DeviceFileEvents
+| where DeviceName == device
+| where FolderPath == "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+| where FileName == "revshell.exe"
+| project Timestamp, ActionType, FolderPath, FileName

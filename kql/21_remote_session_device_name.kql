@@ -1,0 +1,6 @@
+// Remote session device name
+let device = "ch-ops-wks02";
+DeviceLogonEvents
+| where DeviceName == device
+| where RemoteDeviceName == "对手"
+| project Timestamp, RemoteDeviceName, RemoteIP, AccountName, LogonType
