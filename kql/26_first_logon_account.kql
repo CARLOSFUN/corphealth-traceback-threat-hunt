@@ -1,8 +1,13 @@
-// First logon account name
+// Purpose: Identify the account used during the first suspicious logon.
+// Expected output: Account name and timestamp for the earliest remote logon.
+// Flag: 26_first_logon_account
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceLogonEvents
 | where DeviceName == device
-| where RemoteIP == "104.164.168.17"
-| sort by Timestamp asc
-| take 1
+| where Timestamp between (startTime .. endTime)
+| where LogonType in ("RemoteInteractive", "Network")
+| where RemoteIPType == "Public"
+| summarize arg_min(Timestamp, AccountName, RemoteIP) by DeviceName
 | project Timestamp, AccountName, RemoteIP

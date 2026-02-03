@@ -1,7 +1,11 @@
-// Token modified initiating PID
+// Purpose: Identify the initiating process ID associated with token modification events.
+// Expected output: Token modification event timestamps with initiating process identifiers.
+// Flag: 14_token_modified_initiating_pid
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceEvents
 | where DeviceName == device
-| where ActionType has "Token"
-| where InitiatingProcessId == 4888
-| project Timestamp, ActionType, InitiatingProcessId, InitiatingProcessFileName
+| where Timestamp between (startTime .. endTime)
+| where ActionType == "TokenModified"
+| project Timestamp, InitiatingProcessId, InitiatingProcessName, InitiatingProcessCommandLine

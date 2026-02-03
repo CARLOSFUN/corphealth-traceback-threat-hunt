@@ -1,6 +1,12 @@
-// Hash for the staged file
+// Purpose: Capture the hash values for staged payload files.
+// Expected output: SHA1/SHA256 hashes for files matching staging indicators.
+// Flag: 06_staged_file_hash
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceFileEvents
 | where DeviceName == device
-| where FileName == "inventory_6ECFD4DF.csv"
-| project Timestamp, FileName, SHA256
+| where Timestamp between (startTime .. endTime)
+| where ActionType in ("FileCreated", "FileModified")
+| where FileName has "stage"
+| project Timestamp, FileName, FolderPath, SHA1, SHA256

@@ -1,6 +1,11 @@
-// Beacon destination IP and port
+// Purpose: Extract the beacon destination IP and port for the maintenance runner script.
+// Expected output: Timestamped beacon connections with remote IP, port, and process context.
+// Flag: 03_beacon_dest_ip_port
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceNetworkEvents
 | where DeviceName == device
-| where RemoteIP == "127.0.0.1" and RemotePort == 8080
-| project Timestamp, InitiatingProcessFileName, RemoteIP, RemotePort
+| where Timestamp between (startTime .. endTime)
+| where InitiatingProcessCommandLine contains "MaintenanceRunner_Distributed.ps1"
+| project Timestamp, RemoteIP, RemotePort, ActionType, InitiatingProcessCommandLine

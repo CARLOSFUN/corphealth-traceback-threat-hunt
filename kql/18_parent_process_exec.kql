@@ -1,6 +1,11 @@
-// Parent process that executed revshell.exe
+// Purpose: Determine the parent process that launched the suspicious script or binary.
+// Expected output: Parent/child process relationships for the suspected execution.
+// Flag: 18_parent_process_exec
 let device = "ch-ops-wks02";
+let startTime = datetime(2025-11-15);
+let endTime = datetime(2025-12-05);
 DeviceProcessEvents
 | where DeviceName == device
-| where FileName == "revshell.exe"
-| project Timestamp, FileName, InitiatingProcessFileName, InitiatingProcessCommandLine
+| where Timestamp between (startTime .. endTime)
+| where ProcessCommandLine has "MaintenanceRunner_Distributed.ps1" or ProcessCommandLine has "stage"
+| project Timestamp, ProcessName, ProcessCommandLine, InitiatingProcessName, InitiatingProcessCommandLine, InitiatingProcessId
