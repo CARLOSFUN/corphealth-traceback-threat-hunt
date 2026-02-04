@@ -1,6 +1,10 @@
 # CorpHealth Operations Activity Review  
 **Endpoint Threat Hunt (Microsoft Defender for Endpoint Telemetry via Log Analytics)**
 
+[![View Docs](https://img.shields.io/badge/View-Docs-blue)](docs)
+[![View KQL Queries](https://img.shields.io/badge/View-KQL_Queries-green)](kql)
+[![View Screenshots](https://img.shields.io/badge/View-Screenshots-lightgrey)](screenshots)
+
 ---
 
 ## Scenario Summary
@@ -150,13 +154,6 @@ The behaviors align with **post-compromise attacker tradecraft** rather than rou
 
 ---
 
-## How to Reproduce
-
-Run the queries in `/kql` in numeric order (**00 → 31**).  
-Each query is scoped to the device and surfaces one confirmed finding.
-
----
-
 ## KQL Evidence Screenshots
 
 Each screenshot below directly corresponds to its numbered KQL query and confirms the finding visually.
@@ -261,7 +258,7 @@ Each screenshot below directly corresponds to its numbered KQL query and confirm
 
 ## Repo Navigation
 
-- **[docs/](docs)** — narrative report, timeline, IOCs, detections, lessons learned
+- **[/docs](docs)** — narrative report, timeline, IOCs, detections, lessons learned
 - **[/kql](kql)** — step-by-step hunting queries  
 - **[/screenshots](screenshots)** — KQL output evidence  
 
