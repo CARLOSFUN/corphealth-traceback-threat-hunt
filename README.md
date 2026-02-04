@@ -261,9 +261,9 @@ Each screenshot below directly corresponds to its numbered KQL query and confirm
 
 ## Repo Navigation
 
-- **/docs** — narrative report, timeline, IOCs, detections, lessons learned  
-- **/kql** — step-by-step hunting queries  
-- **/screenshots** — KQL output evidence  
+- **[docs/](docs)** — narrative report, timeline, IOCs, detections, lessons learned
+- **[/kql](kql)** — step-by-step hunting queries  
+- **[/screenshots](screenshots)** — KQL output evidence  
 
 ---
 
